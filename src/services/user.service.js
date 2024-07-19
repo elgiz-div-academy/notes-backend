@@ -5,12 +5,18 @@ const createUser = async (params) => {
 
   let existsUser = await findUserByUsername(username);
   if (existsUser) throw new Error("User already exists");
+
   let user = await User.create({
     username,
     password,
   });
 
   return user;
+};
+
+const findAll = async () => {
+  const users = await User.findAll();
+  return users;
 };
 
 const findUserByUsername = async (username) => {
@@ -20,5 +26,6 @@ const findUserByUsername = async (username) => {
 
 module.exports = {
   createUser,
+  findAll,
   findUserByUsername,
 };
