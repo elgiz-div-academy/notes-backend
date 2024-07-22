@@ -1,5 +1,5 @@
 const { encodePayload } = require("../utils/jwt.util");
-const { findUserByUsername } = require("./user.service");
+const { findByUsername: findUserByUsername } = require("./user.service");
 
 const login = async (params) => {
   const { username, password } = params || {};

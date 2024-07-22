@@ -3,7 +3,7 @@ const User = require("../models/User");
 const createUser = async (params) => {
   const { username, password } = params;
 
-  let existsUser = await findUserByUsername(username);
+  let existsUser = await findByUsername(username);
   if (existsUser) throw new Error("User already exists");
 
   let user = await User.create({
@@ -19,7 +19,12 @@ const findAll = async () => {
   return users;
 };
 
-const findUserByUsername = async (username) => {
+const findById = async (id) => {
+  const user = await User.findByPk(id);
+  return user;
+};
+
+const findByUsername = async (username) => {
   let user = await User.findOne({ where: { username } });
   return user;
 };
@@ -27,5 +32,6 @@ const findUserByUsername = async (username) => {
 module.exports = {
   createUser,
   findAll,
-  findUserByUsername,
+  findById,
+  findByUsername,
 };
