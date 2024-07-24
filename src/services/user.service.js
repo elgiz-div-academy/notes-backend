@@ -1,4 +1,5 @@
-const User = require("../models/User");
+const { User } = require("../models");
+const { hashPassword } = require("../utils/bcrypt.util");
 
 const createUser = async (params) => {
   const { username, password } = params;
@@ -6,9 +7,11 @@ const createUser = async (params) => {
   let existsUser = await findByUsername(username);
   if (existsUser) throw new Error("User already exists");
 
+  const hash = await hashPassword(password);
+
   let user = await User.create({
     username,
-    password,
+    password: hash,
   });
 
   return user;

@@ -1,8 +1,13 @@
-const Note = require("../models/Note");
+const { Note } = require("../models");
 
 const findUserNotes = async (userId) => {
   const notes = await Note.findAll({ where: { userId } });
   return notes;
+};
+
+const findUserNote = async (noteId, userId) => {
+  const note = await Note.findOne({ where: { id: noteId, userId: userId } });
+  return note;
 };
 
 const createNote = async (params) => {
@@ -13,7 +18,34 @@ const createNote = async (params) => {
   return note;
 };
 
+const updateNote = async (params) => {
+  const { title, description, noteId, userId } = params || {};
+
+  let note = await findUserNote(noteId, userId);
+  if (!note) throw new Error("Note is not found");
+
+  let updatedNote = await Note.update(
+    { title, description },
+    { where: { id: note.id } }
+  );
+
+  return updatedNote;
+};
+
+const deleteNote = async (params) => {
+  const { noteId, userId } = params || {};
+
+  let note = await findUserNote(noteId, userId);
+
+  if (!note) throw new Error("Note is not found");
+
+  await Note.destroy({ where: { id: note.id } });
+  return true;
+};
+
 module.exports = {
   findUserNotes,
   createNote,
+  updateNote,
+  deleteNote,
 };

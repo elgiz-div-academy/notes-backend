@@ -1,3 +1,4 @@
+const { verifyPassword } = require("../utils/bcrypt.util");
 const { encodePayload } = require("../utils/jwt.util");
 const { findByUsername: findUserByUsername } = require("./user.service");
 
@@ -11,7 +12,8 @@ const login = async (params) => {
 
   user = user.toJSON();
 
-  if (password !== user.password) {
+  const checkPassword = await verifyPassword(password, user.password);
+  if (!checkPassword) {
     throw new Error("password_invalid");
   }
 

@@ -1,7 +1,9 @@
+const { authSchema } = require("../schema");
 const { authService } = require("../services");
 
 const singIn = async (req, res) => {
   const params = req.body;
+
   try {
     let result = await authService.login(params);
     res.json(result);
