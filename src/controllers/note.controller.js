@@ -1,13 +1,17 @@
 const { noteService } = require("../services");
 
-const findAll = async (req, res) => {
-  const { user } = req;
+const findAll = async (req, res, next) => {
+  try {
+    const { user } = req;
 
-  const notes = await noteService.findUserNotes(user.id);
-  res.json(notes);
+    const notes = await noteService.findUserNotes(user.id);
+    res.json(notes);
+  } catch (err) {
+    next(err);
+  }
 };
 
-const createNote = async (req, res) => {
+const createNote = async (req, res, next) => {
   try {
     const { user } = req;
     let params = { ...req.body, userId: user.id };
@@ -19,11 +23,11 @@ const createNote = async (req, res) => {
       note: result,
     });
   } catch (err) {
-    res.status(400).json({ message: err?.message });
+    next(err);
   }
 };
 
-const updateNote = async (req, res) => {
+const updateNote = async (req, res, next) => {
   try {
     const { user } = req;
     let params = { ...req.body, noteId: req.params.id, userId: user.id };
@@ -35,7 +39,7 @@ const updateNote = async (req, res) => {
       note: result,
     });
   } catch (err) {
-    res.status(400).json({ message: err?.message });
+    next(err);
   }
 };
 

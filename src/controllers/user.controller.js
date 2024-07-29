@@ -1,28 +1,18 @@
 const { userService } = require("../services");
 
 const createUser = async (req, res) => {
-  try {
-    let user = await userService.createUser(req.body);
-    res.json({
-      status: true,
-      message: "User created",
-      user,
-    });
-  } catch (err) {
-    res.status(409).json({
-      message: err?.message,
-    });
-  }
+  let user = await userService.createUser(req.body);
+  res.json({
+    status: true,
+    message: "User created",
+    user,
+  });
 };
 
 const findAll = async (req, res) => {
-  try {
-    let users = await userService.findAll();
+  let users = await userService.findAll();
 
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  res.json(users);
 };
 
 module.exports = {
